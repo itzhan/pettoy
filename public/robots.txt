@@ -1,0 +1,7 @@
+# https://www.robotstxt.org/robotstxt.html
+# Allow all web crawlers to access all content
+User-agent: *
+Allow: /
+
+# XML Sitemap location
+Sitemap: https://www.chinapettoy.com/sitemap.xml
