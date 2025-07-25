@@ -407,7 +407,7 @@ const ProductShowcase = () => {
       name: "Luxurious and comfortable kennel",
       description:
         "High quality plush pet bed, kennel, removable, cleanable",
-      image: require("../../assets/007.png"),
+      image: require("../../assets/007.jpg"),
       features: ["Removable Cover", "Plush Material", "Easy Clean"],
       category: "home",
     },
@@ -416,7 +416,7 @@ const ProductShowcase = () => {
       name: "Breathable traction rope",
       description:
         "Luxury dog strap, adjustable strap,with air cushion",
-      image: require("../../assets/008.png"),
+      image: require("../../assets/008.jpg"),
       features: ["Adjustable", "Air Cushioned", "Durable"],
       category: "accessories",
     },
@@ -425,7 +425,7 @@ const ProductShowcase = () => {
       name: "Comfortable hemp rope cat climbing frame",
       description:
         "Luxurious, modern, multi-story cat crawler, solid wood frame, with sisal grinding claws",
-      image: require("../../assets/009.png"),
+      image: require("../../assets/009.jpg"),
       features: ["Sisal Rope", "Solid Wood", "Multi-level"],
       category: "cats",
     },
