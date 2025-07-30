@@ -47,8 +47,16 @@ const CarouselContainer = styled.div`
   margin-top: 40px;
   padding: 0 80px;
 
+  @media (max-width: 1024px) {
+    padding: 0 70px;
+  }
+
   @media (max-width: 768px) {
     padding: 0 60px;
+  }
+
+  @media (max-width: 480px) {
+    padding: 0 50px;
   }
 `;
 
@@ -62,14 +70,17 @@ const ProductGrid = styled.div`
   display: flex;
   gap: 20px;
   transition: ${(props) =>
-    props.noTransition
+    props.noTransition || props.isDragging
       ? "none"
       : "transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94)"};
-  transform: translateX(${(props) => props.translateX}px);
+  transform: translateX(
+    ${(props) => props.translateX + (props.dragOffset || 0)}px
+  );
   padding: 20px 0;
   will-change: transform;
   backface-visibility: hidden;
   perspective: 1000px;
+  touch-action: pan-y; /* Allow vertical scrolling but handle horizontal gestures */
 `;
 
 const NavigationButton = styled.button`
@@ -111,11 +122,29 @@ const NavigationButton = styled.button`
 
   ${(props) => (props.direction === "left" ? "left: 10px;" : "right: 10px;")}
 
+  @media (max-width: 1024px) {
+    width: 55px;
+    height: 55px;
+    font-size: 1.3rem;
+    ${(props) => (props.direction === "left" ? "left: 8px;" : "right: 8px;")}
+  }
+
   @media (max-width: 768px) {
     width: 50px;
     height: 50px;
     font-size: 1.2rem;
     ${(props) => (props.direction === "left" ? "left: 5px;" : "right: 5px;")}
+  }
+
+  @media (max-width: 480px) {
+    width: 45px;
+    height: 45px;
+    font-size: 1.1rem;
+    ${(props) => (props.direction === "left" ? "left: 2px;" : "right: 2px;")}
+
+    &:hover {
+      transform: translateY(-50%) scale(1.1);
+    }
   }
 `;
 
@@ -178,6 +207,11 @@ const ProductCard = styled.div`
         : "0 12px 30px rgba(0, 0, 0, 0.12)"};
   }
 
+  @media (max-width: 1024px) {
+    flex: 0 0 300px;
+    min-width: 300px;
+  }
+
   @media (max-width: 768px) {
     flex: 0 0 280px;
     min-width: 280px;
@@ -189,6 +223,31 @@ const ProductCard = styled.div`
       `
       transform: scale(1) translateY(0);
     `}
+  }
+
+  @media (max-width: 480px) {
+    flex: 0 0 260px;
+    min-width: 260px;
+
+    transform: scale(0.92) translateY(12px);
+
+    ${(props) =>
+      props.isFocused &&
+      `
+      transform: scale(1) translateY(0);
+    `}
+
+    &:hover {
+      transform: ${(props) =>
+        props.isFocused
+          ? "scale(1.01) translateY(-3px)"
+          : "scale(0.94) translateY(8px)"};
+    }
+  }
+
+  @media (max-width: 360px) {
+    flex: 0 0 240px;
+    min-width: 240px;
   }
 `;
 
@@ -233,6 +292,50 @@ const ProductImage = styled.div`
   ${ProductCard}:hover &::after {
     opacity: 1;
   }
+
+  @media (max-width: 768px) {
+    height: 220px;
+  }
+
+  @media (max-width: 480px) {
+    height: 200px;
+
+    &::after {
+      width: 45px;
+      height: 45px;
+    }
+  }
+
+  @media (max-width: 360px) {
+    height: 180px;
+
+    &::after {
+      width: 40px;
+      height: 40px;
+    }
+  }
+
+  @media (max-width: 768px) {
+    height: 220px;
+  }
+
+  @media (max-width: 480px) {
+    height: 200px;
+
+    &::after {
+      width: 45px;
+      height: 45px;
+    }
+  }
+
+  @media (max-width: 360px) {
+    height: 180px;
+
+    &::after {
+      width: 40px;
+      height: 40px;
+    }
+  }
 `;
 
 const ViewIcon = styled(FontAwesomeIcon)`
@@ -253,12 +356,29 @@ const ViewIcon = styled(FontAwesomeIcon)`
 
 const ProductInfo = styled.div`
   padding: 20px;
+
+  @media (max-width: 480px) {
+    padding: 15px;
+  }
+
+  @media (max-width: 360px) {
+    padding: 12px;
+  }
 `;
 
 const ProductName = styled.h3`
   margin: 0 0 10px 0;
   font-size: 1.2rem;
   color: #333;
+
+  @media (max-width: 480px) {
+    font-size: 1.1rem;
+    margin: 0 0 8px 0;
+  }
+
+  @media (max-width: 360px) {
+    font-size: 1rem;
+  }
 `;
 
 const ProductDescription = styled.p`
@@ -266,6 +386,15 @@ const ProductDescription = styled.p`
   color: #666;
   font-size: 0.95rem;
   line-height: 1.5;
+
+  @media (max-width: 480px) {
+    font-size: 0.9rem;
+    line-height: 1.4;
+  }
+
+  @media (max-width: 360px) {
+    font-size: 0.85rem;
+  }
 `;
 
 const ProductFeatures = styled.div`
@@ -297,6 +426,11 @@ const IndicatorContainer = styled.div`
   align-items: center;
   margin-top: 30px;
   gap: 8px;
+
+  @media (max-width: 480px) {
+    margin-top: 25px;
+    gap: 6px;
+  }
 `;
 
 const Indicator = styled.button`
@@ -313,6 +447,20 @@ const Indicator = styled.button`
     background: ${(props) =>
       props.active ? "#f0834c" : "rgba(240, 131, 76, 0.6)"};
     transform: scale(1.2);
+  }
+
+  @media (max-width: 480px) {
+    width: 10px;
+    height: 10px;
+
+    &:hover {
+      transform: scale(1.15);
+    }
+  }
+
+  @media (max-width: 360px) {
+    width: 8px;
+    height: 8px;
   }
 `;
 
@@ -387,8 +535,7 @@ const ProductShowcase = () => {
     {
       id: 5,
       name: "Deluxe pet cart",
-      description:
-        "Fashionable pet cart, foldable, customizable color",
+      description: "Fashionable pet cart, foldable, customizable color",
       image: require("../../assets/005.png"),
       features: ["Foldable", "Portable", "Stylish Design"],
       category: "travel",
@@ -405,8 +552,7 @@ const ProductShowcase = () => {
     {
       id: 7,
       name: "Luxurious and comfortable kennel",
-      description:
-        "High quality plush pet bed, kennel, removable, cleanable",
+      description: "High quality plush pet bed, kennel, removable, cleanable",
       image: require("../../assets/007.jpg"),
       features: ["Removable Cover", "Plush Material", "Easy Clean"],
       category: "home",
@@ -414,8 +560,7 @@ const ProductShowcase = () => {
     {
       id: 8,
       name: "Breathable traction rope",
-      description:
-        "Luxury dog strap, adjustable strap,with air cushion",
+      description: "Luxury dog strap, adjustable strap,with air cushion",
       image: require("../../assets/008.jpg"),
       features: ["Adjustable", "Air Cushioned", "Durable"],
       category: "accessories",
@@ -440,6 +585,12 @@ const ProductShowcase = () => {
   const carouselRef = useRef(null);
   const autoPlayRef = useRef(null);
   const transitionTimeoutRef = useRef(null);
+
+  // Touch gesture states
+  const [touchStart, setTouchStart] = useState(null);
+  const [touchEnd, setTouchEnd] = useState(null);
+  const [isDragging, setIsDragging] = useState(false);
+  const [dragOffset, setDragOffset] = useState(0);
 
   // Open product detail modal
   const handleOpenModal = (product) => {
@@ -501,6 +652,57 @@ const ProductShowcase = () => {
     setIsAutoPlaying(true);
   };
 
+  // Touch gesture handlers
+  const minSwipeDistance = 50;
+
+  const handleTouchStart = (e) => {
+    setTouchEnd(null);
+    setTouchStart(e.targetTouches[0].clientX);
+    setIsDragging(true);
+    setIsAutoPlaying(false); // Pause auto play during touch
+  };
+
+  const handleTouchMove = (e) => {
+    if (!isDragging || !touchStart) return;
+
+    const currentTouch = e.targetTouches[0].clientX;
+    const diff = touchStart - currentTouch;
+
+    // Limit drag distance to prevent excessive movement
+    const maxDrag = cardWidth * 0.8;
+    const limitedDiff = Math.max(-maxDrag, Math.min(maxDrag, diff));
+
+    setDragOffset(limitedDiff);
+    setTouchEnd(currentTouch);
+  };
+
+  const handleTouchEnd = () => {
+    if (!touchStart || !touchEnd || !isDragging) {
+      setIsDragging(false);
+      setDragOffset(0);
+      return;
+    }
+
+    const distance = touchStart - touchEnd;
+    const isLeftSwipe = distance > minSwipeDistance;
+    const isRightSwipe = distance < -minSwipeDistance;
+
+    if (isLeftSwipe) {
+      handleNext();
+    } else if (isRightSwipe) {
+      handlePrevious();
+    }
+
+    // Reset touch states
+    setIsDragging(false);
+    setDragOffset(0);
+    setTouchStart(null);
+    setTouchEnd(null);
+
+    // Resume auto play after a delay
+    setTimeout(() => setIsAutoPlaying(true), 3000);
+  };
+
   // Handle catalog download
   const handleDownloadCatalog = () => {
     const link = document.createElement("a");
@@ -512,11 +714,29 @@ const ProductShowcase = () => {
     document.body.removeChild(link);
   };
 
-  // Carousel navigation functions
-  const cardWidth = 340; // 320px card + 20px gap
+  // Carousel navigation functions - responsive card width
+  const getCardWidth = () => {
+    if (window.innerWidth <= 360) return 260; // 240px card + 20px gap
+    if (window.innerWidth <= 480) return 280; // 260px card + 20px gap
+    if (window.innerWidth <= 768) return 300; // 280px card + 20px gap
+    if (window.innerWidth <= 1024) return 320; // 300px card + 20px gap
+    return 340; // 320px card + 20px gap
+  };
+
+  const [cardWidth, setCardWidth] = useState(getCardWidth());
   const visibleCards = 3; // Number of cards visible at once
   const centerIndex = Math.floor(visibleCards / 2); // Index of center card (1 for 3 cards)
   const cloneCount = 4; // Number of clones on each side
+
+  // Update card width on window resize
+  useEffect(() => {
+    const handleResize = () => {
+      setCardWidth(getCardWidth());
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   // Handle infinite loop transitions with improved logic
   useEffect(() => {
@@ -649,8 +869,18 @@ const ProductShowcase = () => {
             <FontAwesomeIcon icon={faChevronLeft} />
           </NavigationButton>
 
-          <CarouselWrapper ref={carouselRef}>
-            <ProductGrid translateX={translateX} noTransition={noTransition}>
+          <CarouselWrapper
+            ref={carouselRef}
+            onTouchStart={handleTouchStart}
+            onTouchMove={handleTouchMove}
+            onTouchEnd={handleTouchEnd}
+          >
+            <ProductGrid
+              translateX={translateX}
+              noTransition={noTransition}
+              isDragging={isDragging}
+              dragOffset={-dragOffset} // Negative to match swipe direction
+            >
               {extendedProducts.map((product, index) => (
                 <ProductCard
                   key={`${product.id}-${index}`}

@@ -132,7 +132,7 @@ const Footer = () => {
           </FooterAbout>
           <ContactItem>
             <ContactIcon icon={faEnvelope} />
-            gracezhao1177@gmail.com
+            Gracezhao1177@outlook.com
             18917879302@163.com
           </ContactItem>
           <ContactItem>
