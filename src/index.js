@@ -38,7 +38,7 @@ const addStructuredData = () => {
     'contactPoint': {
       '@type': 'ContactPoint',
       'telephone': '+86-151-9022-2399',
-      'email': 'gracezhao1177@gmail.com',
+      'email': 'Gracezhao1177@outlook.com',
       'contactType': 'Customer Service'
     }
   };

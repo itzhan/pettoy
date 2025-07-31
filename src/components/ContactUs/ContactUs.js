@@ -233,7 +233,7 @@ const ContactUs = () => {
     }
     
     // 构建mailto链接
-    const recipient = 'gracezhao1177@gmail.com'; // 您想要接收邮件的地址
+    const recipient = 'Gracezhao1177@outlook.com'; // 您想要接收邮件的地址
     const subject = `Inquiry from ${formData.name}`;
     const body = `
 Name: ${formData.name}
@@ -265,7 +265,7 @@ ${formData.message}
                 </ContactIcon>
                 <ContactDetails>
                   <ContactLabel>Email</ContactLabel>
-                  <ContactText>gracezhao1177@gmail.com</ContactText>
+                  <ContactText>Gracezhao1177@outlook.com</ContactText>
                   <ContactText>18917879302@163.com</ContactText>
                 </ContactDetails>
               </ContactItem>
